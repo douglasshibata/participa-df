@@ -12,7 +12,9 @@ export interface ManifestationResponse {
 })
 export class ManifestationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8000';
+  // Using relative path to take advantage of Nginx reverse proxy in Docker
+  // Falls back to localhost for local development without proxy
+  private apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
 
   submitManifestation(text?: string, file?: File, anonymous: boolean = false): Observable<any> {
     const formData = new FormData();

@@ -46,6 +46,15 @@ O projeto segue as diretrizes **WCAG 2.1 AA**, utilizando:
 2. `npm install`
 3. `ng serve`
 
+### Docker (Recomendado)
+Para subir todo o ecossistema (Frontend, Backend e Banco de Dados) de uma vez:
+1. Instale o Docker e o Docker Compose.
+2. Na raiz do projeto (`participa-df/`):
+```bash
+docker-compose up --build
+```
+O frontend estará disponível em `http://localhost`, o backend em `http://localhost:8000` e o banco de dados em `http://localhost:5432`.
+
 ## Funcionalidades Principais
 
 - **Formulário Inteligente**: Entrada unificada para texto e upload de arquivos.
