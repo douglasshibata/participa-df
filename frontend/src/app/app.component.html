@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="flex justify-between items-center px-4 shadow-md">
+  <div class="flex items-center gap-2">
+    <mat-icon aria-hidden="true">account_balance</mat-icon>
+    <h1 class="text-xl font-bold tracking-tight">Participa DF</h1>
+  </div>
+  <button mat-icon-button aria-label="Acessibilidade - Alto Contraste">
+    <mat-icon>contrast</mat-icon>
+  </button>
+</mat-toolbar>
+
+<main class="bg-gray-100 min-h-[calc(100vh-64px)] py-8">
+  <app-manifestation-form></app-manifestation-form>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="bg-white border-t border-gray-200 py-6 px-4 text-center">
+  <p class="text-gray-600 text-sm">Ouvidoria-Geral do Distrito Federal</p>
+  <p class="text-xs text-gray-400 mt-1">© 2024 Governo do Distrito Federal. Desenvolvido com foco em acessibilidade (WCAG 2.1 AA).</p>
+</footer>
