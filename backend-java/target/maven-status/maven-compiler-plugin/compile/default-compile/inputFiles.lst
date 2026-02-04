@@ -1,0 +1,9 @@
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/service/AiService.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/model/Manifestation.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/service/IzaService.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/dto/ManifestationResponse.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/controller/ManifestationController.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/service/ProtocolService.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/repository/ManifestationRepository.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/BackendJavaApplication.java
+/app/participa-df/backend-java/src/main/java/com/participadf/backend/service/ManifestationService.java

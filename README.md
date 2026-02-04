@@ -6,12 +6,14 @@ Este projeto é uma Progressive Web App (PWA) para a Ouvidoria do Distrito Feder
 
 - `frontend/`: Aplicação Angular 17+ (Standalone Components, Signals, Material, Tailwind).
 - `backend/`: API FastAPI em Python para processamento de mídia e integração IZA.
+- `backend-java/`: Versão alternativa em Java Spring Boot.
 
 ## Tecnologias
 
 - **Frontend**: Angular 17, Tailwind CSS, Angular Material.
-- **Backend**: FastAPI, OpenAI Whisper (transcrição), Pytesseract (OCR).
-- **Database**: PostgreSQL (SQLAlchemy).
+- **Backend (Python)**: FastAPI, OpenAI Whisper (transcrição), Pytesseract (OCR).
+- **Backend (Java)**: Spring Boot 3, Hibernate.
+- **Database**: PostgreSQL.
 - **IA**: Integração simulada com o sistema IZA.
 
 ## Requisitos do Sistema
@@ -48,12 +50,22 @@ O projeto segue as diretrizes **WCAG 2.1 AA**, utilizando:
 
 ### Docker (Recomendado)
 Para subir todo o ecossistema (Frontend, Backend e Banco de Dados) de uma vez:
+
+#### Usando o Backend Python (Default)
 1. Instale o Docker e o Docker Compose.
 2. Na raiz do projeto (`participa-df/`):
 ```bash
 docker-compose up --build
 ```
-O frontend estará disponível em `http://localhost`, o backend em `http://localhost:8000` e o banco de dados em `http://localhost:5432`.
+O frontend estará disponível em `http://localhost`, o backend em `http://localhost:8000`.
+
+#### Usando o Backend Java
+1. Instale o Docker e o Docker Compose.
+2. Na raiz do projeto (`participa-df/`):
+```bash
+docker-compose -f docker-compose-java.yml up --build
+```
+O frontend estará disponível em `http://localhost`, o backend em `http://localhost:8080`.
 
 ## Funcionalidades Principais
 
