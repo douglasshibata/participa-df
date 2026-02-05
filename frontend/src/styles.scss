@@ -4,3 +4,66 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* High Contrast Mode Styles */
+.high-contrast {
+  background-color: #000 !important;
+  color: #fff !important;
+
+  main {
+    background-color: #000 !important;
+  }
+
+  mat-card {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    box-shadow: none !important;
+  }
+
+  mat-toolbar {
+    background-color: #000 !important;
+    border-bottom: 2px solid #fff !important;
+  }
+
+  mat-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: #000 !important;
+    }
+    .mat-mdc-form-field-label {
+      color: #fff !important;
+    }
+    .mat-mdc-input-element {
+      color: #fff !important;
+    }
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #fff !important;
+    }
+  }
+
+  .mat-mdc-raised-button.mat-primary {
+    background-color: #fff !important;
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  .mat-mdc-button, .mat-mdc-icon-button {
+    color: #fff !important;
+  }
+
+  .bg-gray-50, .bg-blue-50, .bg-green-50, .bg-red-50 {
+    background-color: #000 !important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+  }
+
+  p, span, h1, h2, h3, h4 {
+    color: #fff !important;
+  }
+
+  mat-divider {
+    border-top-color: #fff !important;
+  }
+}

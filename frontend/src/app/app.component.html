@@ -1,15 +1,48 @@
-<mat-toolbar color="primary" class="flex justify-between items-center px-4 shadow-md">
-  <div class="flex items-center gap-2">
-    <mat-icon aria-hidden="true">account_balance</mat-icon>
-    <h1 class="text-xl font-bold tracking-tight">Participa DF</h1>
+<mat-toolbar color="primary" class="flex justify-between items-center px-4 shadow-md z-10 sticky top-0">
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 cursor-pointer" routerLink="/">
+      <mat-icon aria-hidden="true">account_balance</mat-icon>
+      <h1 class="text-xl font-bold tracking-tight">Participa DF</h1>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-1 ml-4" aria-label="Navegação Principal">
+      <a mat-button routerLink="/" routerLinkActive="bg-white/20" [routerLinkActiveOptions]="{exact: true}" aria-label="Nova Manifestação">
+        <mat-icon class="mr-1">add_circle</mat-icon> NOVO RELATO
+      </a>
+      <a mat-button routerLink="/status" routerLinkActive="bg-white/20" aria-label="Consultar Manifestação">
+        <mat-icon class="mr-1">search</mat-icon> CONSULTAR
+      </a>
+    </nav>
   </div>
-  <button mat-icon-button aria-label="Acessibilidade - Alto Contraste">
-    <mat-icon>contrast</mat-icon>
-  </button>
+
+  <div class="flex items-center gap-2">
+    <div *ngIf="isOffline()" class="flex items-center gap-1 bg-amber-500 text-white px-3 py-1 rounded-full text-xs font-bold mr-2" role="status" aria-label="Você está offline">
+      <mat-icon class="text-sm h-4 w-4">cloud_off</mat-icon> OFFLINE
+    </div>
+
+    <button
+      mat-icon-button
+      (click)="toggleHighContrast()"
+      [matTooltip]="isHighContrast() ? 'Desativar Alto Contraste' : 'Ativar Alto Contraste'"
+      aria-label="Alternar modo de alto contraste">
+      <mat-icon>{{ isHighContrast() ? 'brightness_high' : 'contrast' }}</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
-<main class="bg-gray-100 min-h-[calc(100vh-64px)] py-8">
-  <app-manifestation-form></app-manifestation-form>
+<!-- Mobile Navigation -->
+<nav class="md:hidden flex bg-white border-b border-gray-200" aria-label="Navegação Mobile">
+  <a class="flex-1 py-3 text-center flex flex-col items-center gap-1" routerLink="/" routerLinkActive="text-blue-700 font-bold border-b-2 border-blue-700" [routerLinkActiveOptions]="{exact: true}">
+    <mat-icon>add_circle</mat-icon>
+    <span class="text-[10px]">NOVO</span>
+  </a>
+  <a class="flex-1 py-3 text-center flex flex-col items-center gap-1" routerLink="/status" routerLinkActive="text-blue-700 font-bold border-b-2 border-blue-700">
+    <mat-icon>search</mat-icon>
+    <span class="text-[10px]">CONSULTAR</span>
+  </a>
+</nav>
+
+<main class="bg-gray-100 min-h-[calc(100vh-128px)] md:min-h-[calc(100vh-112px)] py-8 px-4 transition-colors duration-200">
   <router-outlet></router-outlet>
 </main>
 

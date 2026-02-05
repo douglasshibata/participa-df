@@ -1,0 +1,10 @@
+{
+  "/submit-manifestation": {
+    "target": "http://localhost:8000",
+    "secure": false
+  },
+  "/manifestation": {
+    "target": "http://localhost:8000",
+    "secure": false
+  }
+}

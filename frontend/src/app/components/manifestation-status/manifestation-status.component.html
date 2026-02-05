@@ -1,0 +1,100 @@
+<div class="max-w-2xl mx-auto p-4">
+  <mat-card class="p-6">
+    <mat-card-header>
+      <mat-card-title class="text-2xl font-bold text-blue-800">Consultar Manifestação</mat-card-title>
+      <mat-card-subtitle>Acompanhe o andamento do seu relato.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="mt-6">
+      <div class="flex gap-2">
+        <mat-form-field appearance="outline" class="flex-grow">
+          <mat-label>Número do Protocolo</mat-label>
+          <input
+            matInput
+            placeholder="Ex: OUV-20260129-XXXX"
+            [(ngModel)]="protocolInput"
+            (keyup.enter)="search()"
+            aria-label="Digitar número do protocolo para consulta">
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          class="h-[56px] px-6"
+          (click)="search()"
+          [disabled]="isLoading() || !protocolInput()"
+          aria-label="Buscar protocolo">
+          BUSCAR
+        </button>
+      </div>
+
+      <div *ngIf="isLoading()" class="mt-4">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+      <div *ngIf="error()" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800" role="alert">
+        <p>{{ error() }}</p>
+      </div>
+
+      <div
+        *ngIf="data()"
+        #detailsContainer
+        tabindex="-1"
+        class="mt-8 outline-none focus:ring-2 focus:ring-blue-500 p-2 rounded">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-800">Detalhes da Manifestação</h3>
+          <mat-chip-set>
+            <mat-chip
+              [class.bg-green-100]="data()?.status === 'processed'"
+              [class.bg-blue-100]="data()?.status === 'processing'">
+              {{ data()?.status === 'processed' ? 'PROCESSADO' : 'EM PROCESSAMENTO' }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="space-y-6 mt-6">
+          <section>
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Protocolo</h4>
+            <p class="text-lg font-mono font-bold text-blue-900">{{ data()?.protocol }}</p>
+          </section>
+
+          <section>
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Tipo de Fonte</h4>
+            <p class="text-gray-700">{{ data()?.source_type }}</p>
+          </section>
+
+          <section *ngIf="data()?.original_text">
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Relato Original</h4>
+            <p class="text-gray-700 bg-gray-50 p-3 rounded border border-gray-200 mt-1 whitespace-pre-wrap">{{ data()?.original_text }}</p>
+          </section>
+
+          <section *ngIf="data()?.ai_content">
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Conteúdo Extraído (IA)</h4>
+            <p class="text-gray-700 bg-blue-50 p-3 rounded border border-blue-100 mt-1 whitespace-pre-wrap">{{ data()?.ai_content }}</p>
+          </section>
+
+          <section *ngIf="data()?.iza_tracking_id">
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Integração IZA</h4>
+            <div class="flex items-center gap-2 text-green-700 mt-1">
+              <mat-icon class="text-sm h-auto w-auto">verified</mat-icon>
+              <span class="text-sm">Enviado com sucesso (ID: {{ data()?.iza_tracking_id }})</span>
+            </div>
+          </section>
+
+          <section *ngIf="data()?.confidence_score !== undefined">
+            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Confiança da Extração</h4>
+            <div class="flex items-center gap-2 mt-1">
+              <mat-progress-bar
+                class="flex-grow h-2 rounded"
+                mode="determinate"
+                [value]="(data()?.confidence_score || 0) * 100">
+              </mat-progress-bar>
+              <span class="text-sm font-bold">{{ (data()?.confidence_score || 0) * 100 | number:'1.0-0' }}%</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

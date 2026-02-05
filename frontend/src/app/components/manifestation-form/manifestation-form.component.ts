@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,6 +32,8 @@ import { ManifestationService } from '../../services/manifestation.service';
 export class ManifestationFormComponent {
   private manifestationService = inject(ManifestationService);
   private liveAnnouncer = inject(LiveAnnouncer);
+
+  @ViewChild('resultContainer') resultContainer!: ElementRef;
 
   // Signals for state management
   textReport = signal('');
@@ -75,6 +77,11 @@ export class ManifestationFormComponent {
         this.selectedFile.set(null);
         this.fileName.set('');
         this.liveAnnouncer.announce(`Manifestação enviada com sucesso. Seu protocolo é ${res.protocol}`);
+
+        // Focus the result for accessibility
+        setTimeout(() => {
+          this.resultContainer?.nativeElement.focus();
+        }, 100);
       },
       error: (err) => {
         this.error.set('Erro ao enviar manifestação. Tente novamente mais tarde.');
