@@ -1,0 +1,11 @@
+<div class="row">
+  <div *ngFor="let field of fields" [class]="field.bootstrapClass">
+    <div class="mb-3">
+      <label class="form-label p-1 rounded" [ngStyle]="field.customStyles">{{ field.label }}</label>
+      <input
+        [type]="field.type"
+        class="form-control"
+        [placeholder]="field.placeholder">
+    </div>
+  </div>
+</div>
