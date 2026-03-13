@@ -9,14 +9,9 @@ export interface ManifestationResponse {
 
 export interface ManifestationData {
   protocol: string;
-  original_text: string;
-  ai_content: string;
-  final_content: string;
   source_type: string;
-  confidence_score: number;
-  anonymous: boolean;
-  iza_tracking_id: string;
   status: string;
+  created_at: string;
 }
 
 @Injectable({

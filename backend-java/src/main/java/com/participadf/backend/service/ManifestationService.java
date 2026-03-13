@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.io.File;
-import java.nio.file.Files;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,45 +24,58 @@ public class ManifestationService {
         String sourceType = "text_only";
         Double confidence = 1.0;
 
-        if (file != null && file.exists()) {
-            String fileName = file.getName().toLowerCase();
-            if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".bmp")) {
-                sourceType = "image_ocr";
-                aiText = aiService.extractTextFromImage(file);
-                confidence = 0.88;
-            } else if (fileName.endsWith(".mp3") || fileName.endsWith(".wav") || fileName.endsWith(".mp4") || fileName.endsWith(".mov")) {
-                sourceType = fileName.endsWith(".mp4") || fileName.endsWith(".mov") ? "video_transcription" : "audio_transcription";
-                aiText = aiService.transcribeMedia(file);
-                confidence = 0.95;
+        try {
+            if (file != null && file.exists()) {
+                String fileName = file.getName().toLowerCase();
+                try {
+                    if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".bmp")) {
+                        sourceType = "image_ocr";
+                        aiText = aiService.extractTextFromImage(file);
+                        confidence = 0.88;
+                    } else if (fileName.endsWith(".mp3") || fileName.endsWith(".wav") || fileName.endsWith(".mp4") || fileName.endsWith(".mov")) {
+                        sourceType = fileName.endsWith(".mp4") || fileName.endsWith(".mov") ? "video_transcription" : "audio_transcription";
+                        aiText = aiService.transcribeMedia(file);
+                        confidence = 0.95;
+                    }
+                } catch (Exception e) {
+                    log.error("Error during media processing for {}: {}", protocol, e.getMessage());
+                    aiText = "Erro ao processar arquivo. Tente novamente.";
+                    confidence = 0.0;
+                } finally {
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                }
             }
-            file.delete();
-        }
 
-        String finalContent = (originalText != null ? originalText : "").trim();
-        if (!aiText.isBlank()) {
-            if (!finalContent.isEmpty()) {
-                finalContent += "\n\n--- Conteúdo Extraído via IA ---\n" + aiText.trim();
-            } else {
-                finalContent = aiText.trim();
+            String finalContent = (originalText != null ? originalText : "").trim();
+            if (!aiText.isBlank()) {
+                if (!finalContent.isEmpty()) {
+                    finalContent += "\n\n--- Conteúdo Extraído via IA ---\n" + aiText.trim();
+                } else {
+                    finalContent = aiText.trim();
+                }
             }
+
+            final String finalResult = finalContent;
+            final String finalSourceType = sourceType;
+            final Double finalConfidence = confidence;
+            final String finalAiText = aiText;
+
+            repository.findByProtocol(protocol).ifPresent(m -> {
+                m.setAiContent(finalAiText);
+                m.setFinalContent(finalResult);
+                m.setSourceType(finalSourceType);
+                m.setConfidenceScore(finalConfidence);
+
+                String izaId = izaService.sendToIza(m);
+                m.setIzaTrackingId(izaId);
+
+                repository.save(m);
+                log.info("Finished processing for protocol: {}", protocol);
+            });
+        } catch (Exception e) {
+            log.error("Unexpected error processing protocol {}: {}", protocol, e.getMessage());
         }
-
-        final String finalResult = finalContent;
-        final String finalSourceType = sourceType;
-        final Double finalConfidence = confidence;
-        final String finalAiText = aiText;
-
-        repository.findByProtocol(protocol).ifPresent(m -> {
-            m.setAiContent(finalAiText);
-            m.setFinalContent(finalResult);
-            m.setSourceType(finalSourceType);
-            m.setConfidenceScore(finalConfidence);
-
-            String izaId = izaService.sendToIza(m);
-            m.setIzaTrackingId(izaId);
-
-            repository.save(m);
-            log.info("Finished processing for protocol: {}", protocol);
-        });
     }
 }
