@@ -49,6 +49,66 @@ class ManifestationModel(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     iza_tracking_id = Column(String, nullable=True)
 
+    # LLM analysis fields
+    llm_status = Column(String, default="pendente")  # pendente, em_analise, analisada, falha
+    llm_resumo = Column(Text, nullable=True)
+    llm_categoria = Column(String, nullable=True)
+    llm_sentimento = Column(String, nullable=True)  # positivo, negativo, neutro
+    llm_area_responsavel = Column(String, nullable=True)
+    llm_area_responsavel_score = Column(Float, nullable=True)
+    llm_feedback_ia = Column(Text, nullable=True)
+    llm_analyzed_at = Column(DateTime, nullable=True)
+
+    # Routing fields
+    routing_status = Column(String, nullable=True)  # encaminhada, aguardando_triagem
+    routing_area_id = Column(String, nullable=True)
+    routing_date = Column(DateTime, nullable=True)
+
+
+class AreaResponsavelModel(Base):
+    __tablename__ = "areas_responsaveis"
+    id = Column(Integer, primary_key=True, index=True)
+    codigo = Column(String, unique=True, index=True)
+    nome = Column(String, nullable=False)
+    ativo = Column(Boolean, default=True)
+
+
+class AnalysisQueueModel(Base):
+    __tablename__ = "analysis_queue"
+    id = Column(Integer, primary_key=True, index=True)
+    protocol = Column(String, index=True)
+    content = Column(Text)
+    anonymous = Column(Boolean, default=False)
+    retry_count = Column(Integer, default=0)
+    max_retries = Column(Integer, default=3)
+    status = Column(String, default="pending")  # pending, processing, completed, failed
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    next_retry_at = Column(DateTime, nullable=True)
+    error_message = Column(Text, nullable=True)
+
+
+class AuditLogModel(Base):
+    __tablename__ = "audit_log_llm"
+    id = Column(Integer, primary_key=True, index=True)
+    protocol = Column(String, index=True)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    action = Column(String)  # llm_request, llm_response, pii_sanitization
+    result = Column(String)  # success, failure
+    details = Column(Text, nullable=True)  # JSON with non-sensitive metadata
+
+
+class LLMMetricsModel(Base):
+    __tablename__ = "llm_metrics"
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    provider = Column(String)
+    call_count = Column(Integer, default=0)
+    failure_count = Column(Integer, default=0)
+    avg_latency_ms = Column(Float, default=0.0)
+    period_start = Column(DateTime)
+    period_end = Column(DateTime)
+
+
 Base.metadata.create_all(bind=engine)
 
 # Rate limiter
