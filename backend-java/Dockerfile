@@ -1,8 +1,8 @@
 FROM python:3.12-slim
 
-# Install Java 17 and other system dependencies
+# Install Java 21 and other system dependencies
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jdk-headless \
+    openjdk-21-jdk-headless \
     ffmpeg \
     tesseract-ocr \
     libtesseract-dev \
