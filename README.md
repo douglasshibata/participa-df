@@ -73,3 +73,30 @@ O frontend estará disponível em `http://localhost`, o backend em `http://local
 - **Anonimato**: Alternância simples entre identificado e anônimo.
 - **Geração de Protocolo**: O protocolo (OUV-YYYYMMDD-XXXX) é gerado instantaneamente.
 - **Processamento em Background**: Whisper e OCR rodam em tarefas de segundo plano para evitar timeouts.
+
+---
+
+## 🛠️ Project Deep Dive & Technical Guide
+
+### 🎯 Main Purpose
+Public participation platform for citizens of DF to suggest improvements, integrated with AI analysis.
+
+### 🧰 Tecnologias Utilizadas (Tech Stack)
+- **Primary Technologies:** Angular 19.2.2, Docker / Docker Compose, FastAPI, Java 21, Maven, Node.js / npm, Python 3.12, Spring Boot 3.4.3
+- **Deployment Strategy:** Container-ready with standard Docker/Docker Compose integrations where applicable.
+
+### 🚀 Como Implantar e Executar (How to Deploy & Run)
+#### Backend (Java / Spring Boot)
+1. Navigate to the backend directory.
+2. Compile and run: `./mvnw spring-boot:run` or `mvn spring-boot:run`.
+
+#### Frontend (Angular / Node.js)
+1. Navigate to the frontend directory.
+2. Install dependencies: `npm install`.
+3. Run development server: `npm start` or `npm run dev`.
+
+#### Python Engine / FastAPI
+1. Install dependencies: `pip install -r requirements.txt`.
+2. Run the server/script: `uvicorn main:app --reload` or `python main.py`.
+
+---
